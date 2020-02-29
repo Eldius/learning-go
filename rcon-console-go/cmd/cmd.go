@@ -17,9 +17,11 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/Eldius/rcon-console/rconhelper"
-	"github.com/spf13/cobra"
+	"io"
+	"os"
 	"strings"
+	"github.com/james4k/rcon"
+	"github.com/spf13/cobra"
 )
 
 // cmdCmd represents the cmd command
@@ -56,7 +58,37 @@ func init() {
 }
 
 func executeCommand(host string, port int, pass string, cmd []string) {
-	response := rconhelper.NewRconConnection(host, port, pass).Execute(cmd)
+	//response := rconhelper.NewRconConnection(host, port, pass).Execute(cmd)
 
-	fmt.Println(fmt.Sprintf("command result:\n%s", response))
+	//fmt.Println(fmt.Sprintf("command result:\n%s", response))
+	hostPort := fmt.Sprintf("%s:%d", host, port)
+	fmt.Println(fmt.Sprintf("host: %s", hostPort))
+	remoteConsole, err := rcon.Dial(hostPort, pass)
+	if err != nil {
+		panic(err.Error())
+	}
+	defer remoteConsole.Close()
+
+	reqId, err := remoteConsole.Write(strings.Join(cmd[:], " "))
+	if err != nil {
+		fmt.Fprintln(os.Stderr, "Failed to send command:", err.Error())
+		//continue
+	}
+
+	resp, respReqId, err := remoteConsole.Read()
+	if err != nil {
+		if err == io.EOF {
+			return
+		}
+		fmt.Fprintln(os.Stderr, "Failed to read command:", err.Error())
+		//continue
+	}
+
+	if reqId != respReqId {
+		fmt.Println("Weird. This response is for another request.")
+	}
+
+	fmt.Println(resp)
+	//fmt.Fprintln(out, resp)
+	//out.Write([]byte("> "))
 }
