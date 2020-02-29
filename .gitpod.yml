@@ -1,0 +1,4 @@
+tasks:
+  - command: go version
+image:
+  file: .gitpod.Dockerfile
