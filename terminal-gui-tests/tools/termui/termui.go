@@ -1,11 +1,28 @@
 package termui
 
 import (
+	"fmt"
 	"log"
 
+	"github.com/Eldius/terminal-gui-tests/tools/tweet"
 	ui "github.com/gizak/termui/v3"
 	"github.com/gizak/termui/v3/widgets"
+	"github.com/kurrik/twittergo"
 )
+
+const (
+	mainPanelHeight = 30
+	mainPanelWidth  = 130
+	displayHeight   = 5
+)
+
+func getTopLeft(i int) (int, int) {
+	return 1, 1 + i*displayHeight
+}
+
+func getBottomRight(i int, maxWidh int) (int, int) {
+	return maxWidh, 5 + i*displayHeight
+}
 
 /*
 Main tests gizak/termui
@@ -16,29 +33,29 @@ func Main() {
 	}
 	defer ui.Close()
 
-	p1 := widgets.NewParagraph()
-	p1.Text = "P1"
-	p1.SetRect(10, 0, 60, 5)
+	//termWidth, termHeight := ui.TerminalDimensions()
+	termWidth, termHeight := ui.TerminalDimensions()
 
-	ui.Render(p1)
+	//grid := ui.NewGrid()
+	//grid.SetRect(0, 0, termWidth, termHeight)
+	p := widgets.NewParagraph()
+	p.Title = "Loading..."
+	p.Text = "Fetching Tweets..."
+	p.SetRect(5, 5, termWidth, termHeight)
 
-	p2 := widgets.NewParagraph()
-	p2.Text = "P2"
-	p2.SetRect(5, 15, 25, 5)
+	ui.Render(p)
+	statuses := tweet.FetchTweets(10)
 
-	ui.Render(p2)
+	//fmt.Println(len(statuses))
+	//var statusToShow []ui.GridItem
+	ui.Clear()
+	for i, s := range statuses {
+		displayTweet(i, s, termHeight, termWidth)
+	}
 
-	p3 := widgets.NewParagraph()
-	p3.Text = "P3"
-	p3.SetRect(62, 0, 100, 5)
+	//grid.Set(statusToShow)
 
-	ui.Render(p3)
-
-	p4 := widgets.NewParagraph()
-	p4.Text = "P4"
-	p4.SetRect(0, 15, 40, 35)
-
-	ui.Render(p4)
+	//ui.Render(grid)
 
 	for e := range ui.PollEvents() {
 		if e.Type == ui.KeyboardEvent {
@@ -47,6 +64,21 @@ func Main() {
 	}
 }
 
-func createTable() {
+func displayTweet(i int, s twittergo.Tweet, maxHeight int, maxWidh int) {
+	x0, y0 := getTopLeft(i)
+	x1, y1 := getBottomRight(i, maxWidh)
+	if y1 > maxHeight {
+		return
+	}
+	p := widgets.NewParagraph()
+	p.Title = fmt.Sprintf("user: %s", s.User()["screen_name"])
+	p.SetRect(x0, y0, x1, y1)
+	p.Text = fmt.Sprintf("status: %s", s.Text())
 
+	ui.Render(p)
+
+}
+
+func setupGrid(grid *ui.Grid, rows ...ui.GridItem) {
+	grid.Set(rows)
 }
