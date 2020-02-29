@@ -1,18 +1,28 @@
 package gocui
 
-
 import (
 	"fmt"
 	"log"
 
-	"github.com/jroimartin/gocui"
 	"github.com/Eldius/terminal-gui-tests/tools/tweet"
+	"github.com/jroimartin/gocui"
+)
+
+const (
+	displayHeight = 3
 )
 
 /*
 Main tests jroimartin/gocui
 */
 func Main() {
+	//statuses := tweet.FetchTweets()
+	//for _, s := range statuses {
+	//	fmt.Println(s.Text())
+	//	fmt.Println("---")
+	//	//tools.Debug(s)
+	//}
+
 	g, err := gocui.NewGui(gocui.OutputNormal)
 	if err != nil {
 		log.Panicln(err)
@@ -30,35 +40,40 @@ func Main() {
 	}
 }
 
-func getTopLeft(i int) (int, int){
-	return 1, 1 + i * 2
+func getTopLeft(i int, maxY int) (int, int) {
+	return 1, 1 + i*displayHeight
 }
 
-func getBottomRight(i int, maxX int) (int, int){
-	return maxX, 3 + i * 2
+func getBottomRight(i int, maxX int) (int, int) {
+	return maxX - 1, 3 + i*displayHeight
 }
 
 func layout(g *gocui.Gui) error {
 	//maxX, maxY := g.Size()
-	maxX, _ := g.Size()
+	maxX, maxY := g.Size()
 
-	statuses := tweet.FetchTweets()
+	//fmt.Println(fmt.Sprintf("{x: %d, y: %d}", maxX, maxY))
+	statuses := tweet.FetchTweets(15)
 
-	// Overlap (front)
 	for i, s := range statuses {
-		x0, y0 := getTopLeft(i)
+		fmt.Println(s.FullText())
+		x0, y0 := getTopLeft(i, maxY)
 		x1, y1 := getBottomRight(i, maxX)
-		if v, err := g.SetView("v1", x0, y0, x1, y1); err != nil {
+		if y1 >= maxY {
+			continue
+		}
+		if screen, err := g.SetView(fmt.Sprintf("v%d", i), x0, y0, x1, y1); err != nil {
 			if err != gocui.ErrUnknownView {
 				return err
 			}
-			v.Title = "Regular title"
-			//fmt.Fprintf(v, "{\"x\": %d, \"y\": %d}", maxX, maxY)
-			fmt.Fprintf(v, "%d: %s\n", i, s.User)
+			screen.Title = fmt.Sprintf("%s:", s.User()["screen_name"])
+			//fmt.Fprintf(screen, "{\"x\": %d, \"y\": %d}", maxX, maxY)
+			//fmt.Fprintf(screen, "%s", s.Text())
+			fmt.Fprintf(screen, "{x0: %d, y0: %d, x1: %d, y1: %d, i: %d, maxX: %d, maxY: %d}", x0, y0, x1, y1, i, maxX, maxY)
+			//screen.
 		}
-
-		//fmt.Fprintf(v, "%d: %s\n", i, s.User)
 	}
+
 	return nil
 }
 

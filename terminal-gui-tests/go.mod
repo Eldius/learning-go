@@ -3,6 +3,7 @@ module github.com/Eldius/terminal-gui-tests
 go 1.14
 
 require (
+	github.com/gizak/termui/v3 v3.1.0
 	github.com/jroimartin/gocui v0.4.0
 	github.com/kurrik/oauth1a v0.0.0-20151019171716-cb1b80e32dd4
 	github.com/kurrik/twittergo v0.0.0-20190804010542-25ed642452e5
