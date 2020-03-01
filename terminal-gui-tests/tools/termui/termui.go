@@ -21,10 +21,18 @@ const (
 var currentPosition int = 0
 var statuses []twitter.Tweet
 var termWidth, termHeight int
+var client tweet.MyTwitterClient
+
 /*
 Main tests gizak/termui
 */
 func Main() {
+
+	client = tweet.MyTwitterClient{}
+
+	if err := client.Connect(); err != nil {
+		log.Fatalf("failed to connect to Twitter: %v", err.Error())
+	}
 
 	if err := ui.Init(); err != nil {
 		log.Fatalf("failed to initialize termui: %v", err)
@@ -60,7 +68,7 @@ func Main() {
 }
 
 func refreshTweets() {
-	statuses = tweet.FetchTweets(maxTweets)
+	statuses = client.FetchTimeline(maxTweets)
 	showTweets()
 }
 

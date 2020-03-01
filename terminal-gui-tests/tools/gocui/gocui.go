@@ -12,6 +12,8 @@ const (
 	displayHeight = 3
 )
 
+var client tweet.MyTwitterClient
+
 /*
 Main tests jroimartin/gocui
 */
@@ -22,6 +24,12 @@ func Main() {
 	//	fmt.Println("---")
 	//	//tools.Debug(s)
 	//}
+
+	client = tweet.MyTwitterClient{}
+
+	if err := client.Connect(); err != nil {
+		log.Fatalf("failed to connect to Twitter: %v", err.Error())
+	}
 
 	g, err := gocui.NewGui(gocui.OutputNormal)
 	if err != nil {
@@ -53,7 +61,7 @@ func layout(g *gocui.Gui) error {
 	maxX, maxY := g.Size()
 
 	//fmt.Println(fmt.Sprintf("{x: %d, y: %d}", maxX, maxY))
-	statuses := tweet.FetchTweets(15)
+	statuses := client.FetchTimeline(15)
 
 	for i, s := range statuses {
 		fmt.Println(s.FullText)

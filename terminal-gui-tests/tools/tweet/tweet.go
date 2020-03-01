@@ -8,7 +8,19 @@ import (
 	"github.com/dghubble/oauth1"
 )
 
-func newClient() (client *twitter.Client, err error) {
+
+/*
+MyTwitterClient is an abstraction for the client connection
+*/
+type MyTwitterClient struct {
+	client *twitter.Client
+	IsConnected bool
+}
+
+/*
+Connect will connect your client
+*/
+func (c *MyTwitterClient)Connect() (err error) {
 
 	consumerKey := os.Getenv("TW_CONSUMER_KEY")
 	consumerSecret := os.Getenv("TW_CONSUMER_SECRET")
@@ -21,28 +33,25 @@ func newClient() (client *twitter.Client, err error) {
 	httpClient := config.Client(oauth1.NoContext, token)
 
 	// Twitter client
-	client = twitter.NewClient(httpClient)
-	return
-}
-
-/*
-FetchTweets loads fetch tweets from Twitter
-*/
-func FetchTweets(maxQtd int) []twitter.Tweet {
-	client, err := newClient()
-	if err != nil {
-		fmt.Printf("Could not parse CREDENTIALS file: %v\n", err)
-		os.Exit(1)
-	}
-
+	c.client = twitter.NewClient(httpClient)
+	
 	// Verify Credentials
 	verifyParams := &twitter.AccountVerifyParams{
 		SkipStatus:   twitter.Bool(true),
 		IncludeEmail: twitter.Bool(true),
 	}
-	user, _, _ := client.Accounts.VerifyCredentials(verifyParams)
+	user, _, _ := c.client.Accounts.VerifyCredentials(verifyParams)
 	fmt.Printf("User's ACCOUNT:\n%+v\n", user)
 
+	c.IsConnected = true
+	return
+}
+
+/*
+FetchTimeline loads fetch tweets from Twitter
+*/
+func (c *MyTwitterClient)FetchTimeline(maxQtd int) []twitter.Tweet {
+	client := c.client
 	// Home Timeline
 	homeTimelineParams := &twitter.HomeTimelineParams{
 		Count:     maxQtd,
