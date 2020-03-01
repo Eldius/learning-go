@@ -16,6 +16,7 @@ const (
 	mainPanelWidth  = 130
 	displayHeight   = 5
 	maxTweets       = 100
+	menuHeight 		= 4
 )
 
 var currentPosition int = 0
@@ -57,12 +58,14 @@ func Main() {
 		case "q", "<C-c>":
 			ui.Close()
 			os.Exit(0)
-		case "j", "<Down>":
+		case "j", "<Down>", "<MouseWheelDown>":
 			scrollDown()
-		case "k", "<Up>":
+		case "k", "<Up>", "<MouseWheelUp>":
 			scrollUp()
 		case "r", "R":
 			refreshTweets()
+		case "<Resize>":
+			showTweets()
 		}
 	}
 }
@@ -92,14 +95,15 @@ func showTweets() {
 	for i, s := range statuses[currentPosition:] {
 		displayTweet(i, s)
 	}
+	displayMenu()
 }
 
 func getMaxX() int {
-	return termWidth - 2
+	return termWidth - 5
 }
 
 func getMaxY() int {
-	return termHeight - 2
+	return termHeight - (menuHeight + 1)
 }
 
 func getTopLeft(i int) (int, int) {
@@ -120,7 +124,22 @@ func displayTweet(i int, s twitter.Tweet) {
 	p.Title = fmt.Sprintf("%s", s.User.Name)
 	p.SetRect(x0, y0, x1, y1)
 	p.Text = fmt.Sprintf("%s", s.FullText)
+	p.TextStyle = ui.NewStyle(ui.ColorGreen, ui.ColorClear, ui.ModifierClear)
+	p.TitleStyle = ui.NewStyle(ui.ColorRed, ui.ColorClear, ui.ModifierBold)
+	p.BorderStyle = ui.NewStyle(ui.ColorWhite, ui.ColorClear, ui.ModifierClear)
 
 	ui.Render(p)
 
+}
+
+func displayMenu() {
+	p := widgets.NewParagraph()
+	p.Title = fmt.Sprintf("Options:")
+	p.SetRect(1, termHeight - menuHeight, termWidth -1, termHeight)
+	p.Text = `close: q ctrl+c   refresh: r   scroll up: k arrowUp, mouseWheelUp   scroll down: k arrowUp mouseWheelUp`
+	p.TextStyle = ui.NewStyle(ui.ColorGreen, ui.ColorClear, ui.ModifierClear)
+	p.TitleStyle = ui.NewStyle(ui.ColorBlue, ui.ColorClear, ui.ModifierBold)
+	p.BorderStyle = ui.NewStyle(ui.ColorRed, ui.ColorClear, ui.ModifierClear)
+
+	ui.Render(p)
 }
