@@ -56,7 +56,7 @@ func layout(g *gocui.Gui) error {
 	statuses := tweet.FetchTweets(15)
 
 	for i, s := range statuses {
-		fmt.Println(s.FullText())
+		fmt.Println(s.FullText)
 		x0, y0 := getTopLeft(i, maxY)
 		x1, y1 := getBottomRight(i, maxX)
 		if y1 >= maxY {
@@ -66,7 +66,7 @@ func layout(g *gocui.Gui) error {
 			if err != gocui.ErrUnknownView {
 				return err
 			}
-			screen.Title = fmt.Sprintf("%s:", s.User()["screen_name"])
+			screen.Title = fmt.Sprintf("%s:", s.User.Name)
 			//fmt.Fprintf(screen, "{\"x\": %d, \"y\": %d}", maxX, maxY)
 			//fmt.Fprintf(screen, "%s", s.Text())
 			fmt.Fprintf(screen, "{x0: %d, y0: %d, x1: %d, y1: %d, i: %d, maxX: %d, maxY: %d}", x0, y0, x1, y1, i, maxX, maxY)

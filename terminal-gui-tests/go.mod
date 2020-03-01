@@ -3,10 +3,11 @@ module github.com/Eldius/terminal-gui-tests
 go 1.14
 
 require (
+	github.com/dghubble/go-twitter v0.0.0-20190719072343-39e5462e111f
+	github.com/dghubble/oauth1 v0.6.0
 	github.com/gizak/termui/v3 v3.1.0
 	github.com/jroimartin/gocui v0.4.0
 	github.com/kurrik/oauth1a v0.0.0-20151019171716-cb1b80e32dd4
-	github.com/kurrik/twittergo v0.0.0-20190804010542-25ed642452e5
 	github.com/mattn/go-runewidth v0.0.8 // indirect
 	github.com/mitchellh/go-homedir v1.1.0
 	github.com/nsf/termbox-go v0.0.0-20200204031403-4d2b513ad8be // indirect
