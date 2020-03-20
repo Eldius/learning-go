@@ -17,23 +17,23 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/spf13/cobra"
+	"io"
 	"os"
+	"path/filepath"
+	"time"
+
+	"github.com/spf13/cobra"
 )
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:   "file-renamer",
-	Short: "A brief description of your application",
-	Long: `A longer description that spans multiple lines and likely contains
-examples and usage of using your application. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
-	// Uncomment the following line if your bare application
-	// has an action associated with it:
-	//	Run: func(cmd *cobra.Command, args []string) { },
+	Short: "Rename files",
+	Long:  `Rename files.`,
+	Run: func(cmd *cobra.Command, args []string) {
+		fmt.Println("rename called")
+		proccess(source, destination, minutesAhead)
+	},
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
@@ -48,8 +48,62 @@ func Execute() {
 func init() {
 	cobra.OnInitialize(initConfig)
 
+	rootCmd.Flags().StringVarP(&source, "source", "s", ".", "Files source folder")
+	rootCmd.Flags().StringVarP(&destination, "dest", "d", ".", "Files destination folder")
+	rootCmd.Flags().Int64VarP(&minutesAhead, "minutes", "m", 0, "Minutes to add")
 }
+
+var source string
+var destination string
+var minutesAhead int64
+
+var timeFormatPattern = "20060102150405"
 
 // initConfig reads in config file and ENV variables if set.
 func initConfig() {
+}
+
+func proccess(source, destination string, minutesAhead int64) {
+	var files []string
+	createDestinationFolder(destination)
+	err := filepath.Walk(source, func(path string, info os.FileInfo, err error) error {
+		if !info.IsDir() {
+			files = append(files, path)
+		}
+		return nil
+	})
+	if err != nil {
+		panic(err)
+	}
+	for i, file := range files {
+		sourceFile, err := os.Open(file)
+		if err != nil {
+			panic(err.Error())
+		}
+		defer sourceFile.Close()
+		destFileWithTimestamp := createFileNameWithTimestamp(minutesAhead, i, destination)
+		destinationFile, err := os.Create(destFileWithTimestamp)
+		if err != nil {
+			panic(err.Error())
+		}
+		defer destinationFile.Close()
+		fmt.Println(fmt.Sprintf("copying file '%s' => '%s'", file, destFileWithTimestamp))
+		io.Copy(sourceFile, destinationFile)
+	}
+}
+
+func createFileNameWithTimestamp(minutesAhead int64, secondsToAdd int, destination string) string {
+	fileName, err := filepath.Abs(fmt.Sprintf(
+		"%s/OHB.%s",
+		destination,
+		time.Now().Local().Add(time.Minute*time.Duration(minutesAhead)).Add(time.Second*time.Duration(secondsToAdd)).Format(timeFormatPattern),
+	))
+	if err != nil {
+		panic(err.Error())
+	}
+	return fileName
+}
+
+func createDestinationFolder(destFolder string) {
+	os.MkdirAll(destination, os.ModePerm)
 }
