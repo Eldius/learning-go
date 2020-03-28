@@ -32,8 +32,7 @@ RUN rm -rf /home/gitpod/go && \
         github.com/go-delve/delve/cmd/dlv \
         github.com/davidrjenni/reftools/cmd/fillstruct \
         github.com/godoctor/godoctor && \
-    GO111MODULE=on go get -u -v \
-        golang.org/x/tools/gopls && \
+    GO111MODULE=on go get golang.org/x/tools/gopls@latest && \
     go get -u -v -d github.com/stamblerre/gocode && \
     go build -o $GOPATH/bin/gocode-gomod github.com/stamblerre/gocode && \
     rm -rf $GOPATH/src && \
