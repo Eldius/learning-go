@@ -31,6 +31,7 @@ RUN rm -rf /home/gitpod/go && \
         github.com/sourcegraph/go-langserver \
         github.com/go-delve/delve/cmd/dlv \
         github.com/davidrjenni/reftools/cmd/fillstruct \
+        go get github.com/spf13/cobra/cobra \
         github.com/godoctor/godoctor && \
     GO111MODULE=on go get -u -v \
         golang.org/x/tools/gopls && \
