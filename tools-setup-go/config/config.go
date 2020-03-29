@@ -1,3 +1,6 @@
+/*
+Package config groups the config related code
+*/
 package config
 
 import (
@@ -5,7 +8,20 @@ import (
 	homedir "github.com/mitchellh/go-homedir"
 	"github.com/spf13/viper"
 	yaml "gopkg.in/yaml.v2"
+	"os"
 )
+
+const (
+	configFolder = "~/.tools-setup"
+)
+
+func init() {
+	if cfgDir, err := homedir.Expand(configFolder); err != nil {
+		panic(err.Error())
+	} else {
+		os.MkdirAll(cfgDir, os.ModePerm)
+	}
+}
 
 // AppConfig is an abstractio for app config parameters
 type AppConfig struct {
@@ -44,7 +60,7 @@ func (a *AppConfig) DbFolderExpanded() string {
 // LoadConfig loads configuration file
 func LoadConfig() AppConfig {
 	var cfg AppConfig
-	if err := viper.UnmarshalKey("app", &cfg); err != nil {
+	if err := viper.Unmarshal(&cfg); err != nil {
 		panic(err.Error())
 	}
 

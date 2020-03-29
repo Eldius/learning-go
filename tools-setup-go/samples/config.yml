@@ -1,5 +1,4 @@
-app:
-  logfolder: ~/.tools-setup
-  dbfolder: ~/.tools-setup
-  binfolder: ~/.tools-setup
-  verbose: true
+logfolder: ~/.tools-setup
+dbfolder: ~/.tools-setup
+binfolder: ~/.tools-setup
+#verbose: true

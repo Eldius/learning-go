@@ -1,0 +1,11 @@
+specs:
+  terraform:
+    type: download-and-unpack-binary
+    url: http://test.com/terraform
+    version: 1.2.3
+    versionCmd: version
+  packer:
+    type: download-and-unpack-binary
+    url: http://test.com/packer
+    version: 1.2.3
+    versionCmd: version

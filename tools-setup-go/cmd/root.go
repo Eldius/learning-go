@@ -47,8 +47,8 @@ func init() {
 
 	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.tools-setup-go.yaml)")
 
-	//rootCmd.PersistentFlags().BoolP("verbose", "v", false, "Run in verbose mode")
-	//viper.BindPFlag("verbose", rootCmd.PersistentFlags().Lookup("verbose"))
+	rootCmd.PersistentFlags().BoolP("verbose", "v", false, "Run in verbose mode")
+	viper.BindPFlag("verbose", rootCmd.PersistentFlags().Lookup("verbose"))
 }
 
 // initConfig reads in config file and ENV variables if set.
