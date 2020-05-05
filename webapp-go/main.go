@@ -1,26 +1,53 @@
 package main
 
 import (
-    "fmt"
+	"html/template"
 	"net/http"
-	"github.com/gorilla/mux"
+	"net/url"
+	"fmt"
+	"os"
 )
 
-func main() {
-    http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-        fmt.Fprintf(w, "Hello, you've requested: %s\n", r.URL.Path)
-    })
+var tpl = template.Must(template.ParseFiles("template/index.html"))
 
-	fs := http.FileServer(http.Dir("static/"))
-	http.Handle("/static/", http.StripPrefix("/static/", fs))
-	r := mux.NewRouter()
-	r.HandleFunc("/books/{title}/page/{page}", func(w http.ResponseWriter, r *http.Request) {
-		// get the book
-		// navigate to the page
-		vars := mux.Vars(r)
-		title := vars["title"] // the book title slug
-		page := vars["page"] // the page
-        fmt.Fprintf(w, "You've requested the book: %s on page %s\n", title, page)
-	})
-    http.ListenAndServe(":8080", nil)
+func indexHandler(w http.ResponseWriter, r *http.Request) {
+	tpl.Execute(w, nil)
+}
+
+func searchHandler(w http.ResponseWriter, r *http.Request) {
+	u, err := url.Parse(r.URL.String())
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte("Internal server error"))
+		return
+	}
+
+	params := u.Query()
+	searchKey := params.Get("q")
+	page := params.Get("page")
+	if page == "" {
+		page = "1"
+	}
+
+	fmt.Println("Search Query is: ", searchKey)
+	fmt.Println("Results page is: ", page)
+}
+
+
+func main() {
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "3000"
+	}
+
+	mux := http.NewServeMux()
+
+	// Add the following two lines
+	fs := http.FileServer(http.Dir("assets"))
+	mux.Handle("/static/", http.StripPrefix("/static/", fs))
+
+	mux.HandleFunc("/", indexHandler)
+	mux.HandleFunc("/search", searchHandler)
+
+	http.ListenAndServe(":"+port, mux)
 }
