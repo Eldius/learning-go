@@ -44,7 +44,7 @@ func main() {
 
 	// Add the following two lines
 	fs := http.FileServer(http.Dir("assets"))
-	mux.Handle("/static/", http.StripPrefix("/static/", fs))
+	mux.Handle("static/", http.StripPrefix("/static`/", fs))
 
 	mux.HandleFunc("/", indexHandler)
 	mux.HandleFunc("/search", searchHandler)
