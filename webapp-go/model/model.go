@@ -1,4 +1,7 @@
-package employee
+/*
+Package model is where entities and TOs live...
+*/
+package model
 
 import (
 	"time"
@@ -9,7 +12,7 @@ import (
 Employee it's an employee
 */
 type Employee struct {
-	Code int64
+	ID int64
 	Name string
 	Role string
 	SalaryHistory []Salary
@@ -23,6 +26,31 @@ type Salary struct {
 	Since time.Time
 	Until time.Time
 	Value float64
+}
+/*
+EmployeeTO is the TO object to transfer
+*/
+type EmployeeTO struct {
+	ID int64
+	Name string
+	Role string
+	SalaryHistory []Salary
+	LastSalary Salary
+	Active bool
+}
+
+/*
+ToTO parses entity to TO
+*/
+func (e *Employee)ToTO() EmployeeTO {
+	return EmployeeTO{
+		ID: e.ID,
+		Name: e.Name,
+		Role: e.Role,
+		SalaryHistory: e.SalaryHistory,
+		LastSalary: e.GetLastSalary(),
+		Active: e.Active,
+	}
 }
 
 /*
@@ -80,7 +108,7 @@ func ListEmployees() []Employee {
 	employees := make([]Employee,0)
 
 	employees = append(employees, Employee{
-		Code: 1,
+		ID: 1,
 		Name: "Fulano de Tal",
 		Role: "Developer",
 		Active: false,
@@ -94,7 +122,7 @@ func ListEmployees() []Employee {
 	})
 
 	employees = append(employees, Employee{
-		Code: 2,
+		ID: 2,
 		Name: "Ciclano da Silva",
 		Role: "Developer",
 		Active: true,
