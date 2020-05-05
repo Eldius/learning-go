@@ -11,21 +11,21 @@
                 <table class="table table-striped table-hover mb-0">
                     <thead>
                         <tr>
-                            <th>Nome</th>
-                            <th>Descrição</th>
-                            <th>Preço</th>
-                            <th>Quantidade</th>
+                            <th>Code</th>
+                            <th>Name</th>
+                            <th>Role</th>
+                            <th>Base Salary</th>
+                            <th>Active</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {{range .}}
+                        {{range .employees}}
                         <tr>
-                            <td>{{.Nome}}</td>
-                            <td>{{.Descricao}}</td>
-                            <td>{{.Preco}}</td>
-                            <td>{{.Quantidade}}</td>
-                            <td><a href="edit?id={{.Id}}" class="btn btn-info">Editar</a></td>
-                            <td><button onclick="onDelete('{{.Id}}')" class="btn btn-danger">Deletar</button></td>
+                            <td>{{.Code}}</td>
+                            <td>{{.Name}}</td>
+                            <td>{{.Role}}</td>
+                            <td>{{.GetLastSalary.Value}}</td>
+                            <td>{{.Active}}</td>
                         </tr>
                         {{end}}
                     </tbody>
