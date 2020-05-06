@@ -44,9 +44,9 @@ jobs:
         GOARCH: arm
         GOARM: 5
 
-    - name: Create Package
+    - name: Create Bintray Package
       run: |
-        curl -X POST 'https://api.bintray.com/packages/eldius/learning-go' \
+        curl -i -X POST 'https://api.bintray.com/packages/eldius/learning-go' \
           -ueldius:${{secrets.BINTRAY_SECRET_KEY}} \
           -H 'Content-Type: application/json' \
           -d '{
@@ -60,8 +60,14 @@ jobs:
               "public_stats": true
           }'
 
-    - name: Create Version
-      run: 'curl -i -X POST -ueldius:${{secrets.BINTRAY_SECRET_KEY}} -H "Content-Type: application/json" "https://api.bintray.com/packages/eldius/learning-go/versions" -d "{\"name\": \"development\"}"'
+    - name: Create Bintray Version
+      run: |
+        curl -i -X POST 'https://api.bintray.com/packages/eldius/learning-go/file-server/versions' \
+          -ueldius:${{secrets.BINTRAY_SECRET_KEY} \
+          -H 'Content-Type: application/json' \
+          -d '{
+            "name": "develop"
+          }'
 
     - name: Upload to Bintray Linux Arm
       run: 'curl -i -H "X-GPG-PASSPHRASE: ${{secrets.BINTRAY_SIGNIN_KEY}}" -X PUT -T file-server/bin/file-server.linux.arm -ueldius:${{secrets.BINTRAY_SECRET_KEY}} "https://api.bintray.com/content/eldius/learning-go/file-server/development/file-server.linux.arm.$( git rev-parse --short HEAD );publish=1;override=1"'
