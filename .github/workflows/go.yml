@@ -45,12 +45,10 @@ jobs:
         GOARM: 5
 
     - name: Create Package
-      run: |
-        curl -i -X POST -ueldius:${{secrets.BINTRAY_SECRET_KEY}} -H "Content-Type: application/json" "https://api.bintray.com/packages/eldius/learning-go" -d '{"name": "file-server", "desc": "file-server", "licenses": ["GPL-3.0"], "vcs_url": "https://github.com/Eldius/learning-go.git", "website_url": "https://github.com/Eldius/learning-go.git", "issue_tracker_url": "https://github.com/Eldius/learning-go.git/issues", "github_repo": "Eldius/learning-go", "public_download_numbers": "true", "public_stats": "true" }'
+      run: 'curl -i -X POST -ueldius:${{secrets.BINTRAY_SECRET_KEY}} -H "Content-Type: application/json" "https://api.bintray.com/packages/eldius/learning-go" -d \'{"name": "file-server", "desc": "file-server", "licenses": ["GPL-3.0"], "vcs_url": "https://github.com/Eldius/learning-go.git", "website_url": "https://github.com/Eldius/learning-go.git", "issue_tracker_url": "https://github.com/Eldius/learning-go.git/issues", "github_repo": "Eldius/learning-go", "public_download_numbers": "true", "public_stats": "true" }\''
 
     - name: Create Version
-      run: |
-        curl -i -X POST -ueldius:${{secrets.BINTRAY_SECRET_KEY}} -H "Content-Type: application/json" "https://api.bintray.com/packages/eldius/learning-go/versions" -d "{\"name\": \"development\"}"
+      run: 'curl -i -X POST -ueldius:${{secrets.BINTRAY_SECRET_KEY}} -H "Content-Type: application/json" "https://api.bintray.com/packages/eldius/learning-go/versions" -d "{\"name\": \"development\"}"'
 
     - name: Upload to Bintray Linux Arm
       run: 'curl -i -H "X-GPG-PASSPHRASE: ${{secrets.BINTRAY_SIGNIN_KEY}}" -X PUT -T file-server/bin/file-server.linux.arm -ueldius:${{secrets.BINTRAY_SECRET_KEY}} "https://api.bintray.com/content/eldius/learning-go/file-server/development/file-server.linux.arm.$( git rev-parse --short HEAD );publish=1;override=1"'
