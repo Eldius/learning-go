@@ -26,19 +26,34 @@ jobs:
       run: cd file-server ; go test -v ./...
 
     - name: Build File Server (Linux amd64)
-      run: cd file-server ; go build -v -o bin/file-server.linux.amd64 .
+      run: |
+        cd file-server ; \
+        go build -v \
+        -ldflags \
+        "-X 'github.com/Eldius/learning-go/file-server/cmd.buildTime=$(date +"%Y.%m.%d %H:%M:%S")' -X 'github.com/Eldius/learning-go/file-server/cmd.commitHash=$(git log -n 1)'" \
+        -o bin/file-server.linux.amd64 .
       env:
         GOOS: linux
         GOARCH: amd64
 
     - name: Build File Server (Windows amd64)
-      run: cd file-server ; go build -v -o bin/file-server.windows.amd64.exe .
+      run: |
+        cd file-server ; \
+        go build -v \
+        -ldflags \
+        "-X 'github.com/Eldius/learning-go/file-server/cmd.buildTime=$(date +"%Y.%m.%d %H:%M:%S")' -X 'github.com/Eldius/learning-go/file-server/cmd.commitHash=$(git log -n 1)'" \
+        -o bin/file-server.windows.amd64.exe .
       env:
         GOOS: windows
         GOARCH: amd64
 
     - name: Build File Server (Raspbian - Raspberry Pi)
-      run: cd file-server ; go build -v -o bin/file-server.linux.arm .
+      run: |
+        cd file-server ; \
+        go build -v \
+        -ldflags \
+        "-X 'github.com/Eldius/learning-go/file-server/cmd.buildTime=$(date +"%Y.%m.%d %H:%M:%S")' -X 'github.com/Eldius/learning-go/file-server/cmd.commitHash=$(git log -n 1)'" \
+        -o bin/file-server.linux.arm .
       env:
         GOOS: linux
         GOARCH: arm
