@@ -1,4 +1,5 @@
 #!/bin/bash
 
 echo "- Building from module script..."
-go clean && go test && go build
+yarn install && \
+    go clean && go test && go build

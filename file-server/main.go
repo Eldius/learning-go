@@ -15,7 +15,7 @@ limitations under the License.
 */
 package main
 
-import "github.com/Eldius/learning-go/github.com/Eldius/learning-go/learning-golearning-gofile-server/cmd"
+import "github.com/Eldius/learning-go/file-server/cmd"
 
 func main() {
 	cmd.Execute()
