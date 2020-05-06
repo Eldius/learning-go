@@ -48,10 +48,11 @@ to quickly create a Cobra application.`,
 }
 
 func printServerStartedLog(path string, serverPort int) {
-	msg := fmt.Sprintf("Serving %s on HTTP at:\n", path)
+	msg := fmt.Sprintf("\n\n---\nServing %s on HTTP at:\n", path)
 	for _, ip := range getIPAddress() {
 		msg += fmt.Sprintf("- http://%s:%d\n", ip, serverPort)
 	}
+	msg += "---\n"
 	log.Println(msg)
 }
 
