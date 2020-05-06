@@ -49,6 +49,7 @@ jobs:
         curl -i \
           -X POST \
           -ueldius:${{secrets.BINTRAY_SECRET_KEY}} \
+          -H "Content-Type: application/json" \
           "https://api.bintray.com/packages/eldius/learning-go" \
           -d '{
             "name": "file-server", 
@@ -67,6 +68,7 @@ jobs:
         curl -i \
           -X POST \
           -ueldius:${{secrets.BINTRAY_SECRET_KEY}} \
+          -H "Content-Type: application/json" \
           "https://api.bintray.com/packages/eldius/learning-go/versions" \
           -d '{
             "name": "development"
