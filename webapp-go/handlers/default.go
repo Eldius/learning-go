@@ -8,7 +8,7 @@ import (
 	"encoding/json"
 	"html/template"
 	"net/http"
-	"github.com/Eldius/webapp-go/model"
+	"github.com/Eldius/learning-go/webapp-go/model"
 )
 
 var temp = template.Must(template.ParseGlob("templates/*.html"))

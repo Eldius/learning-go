@@ -15,7 +15,7 @@ limitations under the License.
 */
 package main
 
-import "github.com/Eldius/rcon-console/cmd"
+import "github.com/Eldius/learning-go/rcon-console/cmd"
 
 func main() {
 	cmd.Execute()

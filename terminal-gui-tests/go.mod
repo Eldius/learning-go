@@ -1,4 +1,4 @@
-module github.com/Eldius/terminal-gui-tests
+module github.com/Eldius/learning-go/terminal-gui-tests
 
 go 1.14
 

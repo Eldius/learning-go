@@ -6,7 +6,7 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/Eldius/tools-setup-go/specs"
+	"github.com/Eldius/learning-go/tools-setup-go/specs"
 	"github.com/spf13/cobra"
 )
 

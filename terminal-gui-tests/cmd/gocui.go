@@ -18,7 +18,7 @@ package cmd
 import (
 
 	"github.com/spf13/cobra"
-	"github.com/Eldius/terminal-gui-tests/tools/gocui"
+	"github.com/Eldius/learning-go/terminal-gui-tests/tools/gocui"
 )
 
 // gocuiCmd represents the gocui command

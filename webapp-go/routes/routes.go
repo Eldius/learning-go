@@ -2,7 +2,7 @@ package routes
 
 import (
 	"net/http"
-	"github.com/Eldius/webapp-go/handlers"
+	"github.com/Eldius/learning-go/webapp-go/handlers"
 )
 
 /*

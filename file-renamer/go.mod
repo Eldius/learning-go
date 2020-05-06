@@ -1,4 +1,4 @@
-module github.com/Eldius/file-renamer
+module github.com/Eldius/learning-go/file-renamer
 
 go 1.14
 

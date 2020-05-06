@@ -2,10 +2,10 @@ package main
 
 import (
 	"net/http"
-	"github.com/Eldius/webapp-go/routes"
+	"github.com/Eldius/learning-go/webapp-go/routes"
 )
 
-func main() {
+func mainOld() {
 	routes.LoadRoutes()
 	http.ListenAndServe(":8000", nil)
 }

@@ -12,7 +12,7 @@ import (
 	homedir "github.com/mitchellh/go-homedir"
 	"github.com/spf13/viper"
 	"net/http"
-	"github.com/Eldius/webapp-go/routes"
+	"github.com/Eldius/learning-go/webapp-go/routes"
 )
 
 var cfgFile string

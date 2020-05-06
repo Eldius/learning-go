@@ -15,7 +15,7 @@ limitations under the License.
 */
 package main
 
-import "github.com/Eldius/webapp-go/cmd"
+import "github.com/Eldius/learning-go/webapp-go/cmd"
 
 func main() {
 	cmd.Execute()

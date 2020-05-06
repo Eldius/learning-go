@@ -15,7 +15,7 @@ limitations under the License.
 */
 package main
 
-import "github.com/Eldius/tools-setup-go/cmd"
+import "github.com/Eldius/learning-go/tools-setup-go/cmd"
 
 func main() {
 	cmd.Execute()

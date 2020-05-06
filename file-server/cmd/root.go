@@ -9,6 +9,7 @@ import (
 	"log"
 	"github.com/spf13/cobra"
 	"os"
+	"net"
 	"net/http"
 	homedir "github.com/mitchellh/go-homedir"
 	"github.com/spf13/viper"
@@ -38,11 +39,48 @@ to quickly create a Cobra application.`,
 		//http.ListenAndServe(fmt.Sprintf(":%d", serverPort) , mux)
 		//http.ListenAndServe(fmt.Sprintf(":%d", serverPort) , handlers.LoggingHandler(os.Stdout, mux))
 
-		fs := http.FileServer(http.Dir(getRootPath(serverPath)))
+		path := getRootPath(serverPath)
+		fs := http.FileServer(http.Dir(path))
 		http.Handle("/", handlers.LoggingHandler(log.Writer(), fs))
-		log.Printf("Serving %s on HTTP port: %d\n", getRootPath(serverPath), serverPort)
+		printServerStartedLog(path, serverPort)
 		log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", serverPort), nil))
 	 },
+}
+
+func printServerStartedLog(path string, serverPort int) {
+	msg := fmt.Sprintf("Serving %s on HTTP at:\n", path)
+	for _, ip := range getIPAddress() {
+		msg += fmt.Sprintf("- http://%s:%d\n", ip, serverPort)
+	}
+	log.Println(msg)
+}
+
+func getIPAddress() []string {
+	results := make([]string, 0)
+	ifaces, err := net.Interfaces()
+	// handle err
+	if err != nil {
+
+	}
+	for _, i := range ifaces {
+		addrs, err := i.Addrs()
+		if err != nil {
+			log.Panic(err.Error())
+		}
+		// handle err
+		for _, addr := range addrs {
+			var ip net.IP
+			switch v := addr.(type) {
+			case *net.IPNet:
+					ip = v.IP
+			case *net.IPAddr:
+					ip = v.IP
+			}
+			results = append(results, ip.String())
+		}
+	}
+
+	return results
 }
 
 func getRootPath(serverPath string) string {

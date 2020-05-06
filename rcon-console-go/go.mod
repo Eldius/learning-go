@@ -1,4 +1,4 @@
-module github.com/Eldius/rcon-console
+module github.com/Eldius/learning-go/rcon-console
 
 go 1.14
 

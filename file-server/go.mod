@@ -1,4 +1,4 @@
-module github.com/Eldius/github.com/Eldius/file-server
+module github.com/Eldius/learning-go/file-server
 
 go 1.14
 

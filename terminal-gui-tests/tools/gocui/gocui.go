@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/Eldius/terminal-gui-tests/tools/tweet"
+	"github.com/Eldius/learning-go/terminal-gui-tests/tools/tweet"
 	"github.com/jroimartin/gocui"
 )
 

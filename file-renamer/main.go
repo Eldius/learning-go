@@ -15,7 +15,7 @@ limitations under the License.
 */
 package main
 
-import "github.com/Eldius/file-renamer/cmd"
+import "github.com/Eldius/learning-go/file-renamer/cmd"
 
 func main() {
 	cmd.Execute()

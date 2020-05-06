@@ -18,7 +18,7 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/Eldius/terminal-gui-tests/tools/termui"
+	"github.com/Eldius/learning-go/terminal-gui-tests/tools/termui"
 	"github.com/spf13/cobra"
 )
 

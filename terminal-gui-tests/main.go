@@ -15,7 +15,7 @@ limitations under the License.
 */
 package main
 
-import "github.com/Eldius/terminal-gui-tests/cmd"
+import "github.com/Eldius/learning-go/terminal-gui-tests/cmd"
 
 func main() {
 	cmd.Execute()

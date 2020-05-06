@@ -1,4 +1,4 @@
-module github.com/Eldius/webapp-go
+module github.com/Eldius/learning-go/webapp-go
 
 go 1.14
 

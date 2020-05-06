@@ -1,4 +1,4 @@
-module github.com/Eldius/tools-setup-go
+module github.com/Eldius/learning-go/tools-setup-go
 
 go 1.14
 

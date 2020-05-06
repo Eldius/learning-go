@@ -5,7 +5,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/Eldius/terminal-gui-tests/tools/tweet"
+	"github.com/Eldius/learning-go/terminal-gui-tests/tools/tweet"
 	"github.com/dghubble/go-twitter/twitter"
 	ui "github.com/gizak/termui/v3"
 	"github.com/gizak/termui/v3/widgets"

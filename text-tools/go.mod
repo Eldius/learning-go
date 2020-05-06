@@ -1,4 +1,4 @@
-module github.com/Eldius/text-tools
+module github.com/Eldius/learning-go/text-tools
 
 go 1.14
 
