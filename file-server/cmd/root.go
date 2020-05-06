@@ -44,8 +44,12 @@ build time: %s
 
 		path := getRootPath(serverPath)
 		fs := http.FileServer(http.Dir(path))
-		http.Handle("/", handlers.LoggingHandler(log.Writer(), fs))
+		r := handlers.LoggingHandler(log.Writer(), fs)
 		printServerStartedLog(path, serverPort)
+		if *serverCompress {
+			r = handlers.CompressHandler(r)
+		}
+		http.Handle("/", r)
 		log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", serverPort), nil))
 	 },
 }
@@ -99,6 +103,7 @@ func getRootPath(serverPath string) string {
 
 var serverPort int
 var serverPath string
+var serverCompress *bool
 
 // Execute adds all child commands to the root command and sets flags appropriately.
 // This is called by main.main(). It only needs to happen once to the rootCmd.
@@ -122,7 +127,7 @@ func init() {
 
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.
-	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	serverCompress = rootCmd.Flags().BoolP("compress", "c", false, "Compress data")
 }
 
 // initConfig reads in config file and ENV variables if set.
