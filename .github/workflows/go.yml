@@ -63,7 +63,7 @@ jobs:
     - name: Create Bintray Version
       run: |
         curl -i -X POST 'https://api.bintray.com/packages/eldius/learning-go/file-server/versions' \
-          -ueldius:${{secrets.BINTRAY_SECRET_KEY} \
+          -ueldius:${{secrets.BINTRAY_SECRET_KEY}} \
           -H 'Content-Type: application/json' \
           -d '{
             "name": "develop"
