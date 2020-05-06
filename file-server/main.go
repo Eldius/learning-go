@@ -1,3 +1,5 @@
+// +build !trail
+
 /*
 Copyright © 2020 NAME HERE <EMAIL ADDRESS>
 
