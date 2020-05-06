@@ -45,7 +45,7 @@ jobs:
         GOARM: 5
 
     - name: Create Package
-      run: 'curl -i -X POST -ueldius:${{secrets.BINTRAY_SECRET_KEY}} -H "Content-Type: application/json" "https://api.bintray.com/packages/eldius/learning-go" -d "{\"name\": \"file-server\", \"desc\": \"file-server\", \"licenses\": [\"GPL-3.0\"], \"vcs_url\": \"https://github.com/Eldius/learning-go.git\", \"website_url\": \"https://github.com/Eldius/learning-go.git\", \"issue_tracker_url\": \"https://github.com/Eldius/learning-go.git/issues\", \"github_repo\": \"Eldius/learning-go\", \"public_download_numbers\": true, \"public_stats\": true }"'
+      run: 'curl -i -X POST -ueldius:${{secrets.BINTRAY_SECRET_KEY}} -H "Content-Type: application/json" "https://api.bintray.com/packages/eldius/learning-go" -d "{\"name\": \"file-server\", \"desc\": \"file-server\", \"licenses\": [\"GPL-3.0\"], \"public_download_numbers\": true, \"public_stats\": true }"'
 
     - name: Create Version
       run: 'curl -i -X POST -ueldius:${{secrets.BINTRAY_SECRET_KEY}} -H "Content-Type: application/json" "https://api.bintray.com/packages/eldius/learning-go/versions" -d "{\"name\": \"development\"}"'
