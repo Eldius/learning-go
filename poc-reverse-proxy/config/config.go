@@ -38,11 +38,11 @@ func match(path string, routes map[*regexp.Regexp]Route) *Route {
 }
 
 func LoadRoutes() (cfg RoutesConfig, err error) {
-	routes := make(map[string]Route, 0)
+	routes := make(map[string]Route)
 	patterns := make(map[*regexp.Regexp]Route)
 	for k := range viper.GetStringMap("routes") {
 		var r Route
-		viper.UnmarshalKey(fmt.Sprintf("routes.%s", k), &r)
+		_ = viper.UnmarshalKey(fmt.Sprintf("routes.%s", k), &r)
 		patterns[regexp.MustCompile(k)] = r
 		routes[k] = r
 	}

@@ -45,6 +45,18 @@ func TestMatch(t *testing.T) {
 	}
 }
 
+func TestNotMatch(t *testing.T) {
+	if cfg, err := LoadRoutes(); err != nil {
+		t.Error("Failed to load configuration from file")
+	} else {
+
+		r := match("/app", cfg.patterns)
+		if r != nil {
+			t.Error("Should return a nil route")
+		}
+	}
+}
+
 func TestMatchPrefix(t *testing.T) {
 	if cfg, err := LoadRoutes(); err != nil {
 		t.Error("Failed to load configuration from file")
