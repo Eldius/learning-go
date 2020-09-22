@@ -84,37 +84,3 @@ func TestDraft2(t *testing.T) {
 		log.Println(k, "=>", v)
 	}
 }
-
-/*
-func TestWriteCfg(t *testing.T) {
-	cfg := RoutesConfig{
-		Routes: map[string]Route{
-			`^/app01.*\z`: Route{
-				Backends: []string{"http://localhost:8888"},
-				Headers: Headers{
-					In: []string{
-						"Content-Type",
-						"Accepts",
-						"Host",
-					},
-					Out: []string{"Content-Type"},
-				},
-			},
-			`^/app02.*\z`: Route{
-				Backends: []string{"http://localhost:9999"},
-				Headers: Headers{
-					In: []string{
-						"Content-Type",
-						"Accepts",
-						"Host",
-					},
-					Out: []string{"Content-Type"},
-				},
-			},
-		},
-	}
-
-	b, _ := yaml.Marshal(cfg)
-	log.Println("\n", string(b))
-}
-*/
