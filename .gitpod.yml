@@ -1,4 +1,4 @@
 tasks:
   - command: go version
-image:
-  file: .gitpod.Dockerfile
+#image:
+#  file: .gitpod.Dockerfile
