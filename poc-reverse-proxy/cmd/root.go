@@ -1,24 +1,14 @@
 /*
-Copyright © 2020 NAME HERE <EMAIL ADDRESS>
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
+Package cmd holds all the commands and subcommands
 */
 package cmd
 
 import (
 	"fmt"
-	"github.com/spf13/cobra"
 	"os"
+	"path/filepath"
+
+	"github.com/spf13/cobra"
 
 	homedir "github.com/mitchellh/go-homedir"
 	"github.com/spf13/viper"
@@ -29,13 +19,8 @@ var cfgFile string
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:   "poc-reverse-proxy",
-	Short: "A brief description of your application",
-	Long: `A longer description that spans multiple lines and likely contains
-examples and usage of using your application. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "A proof of concept project of a reverse proxy",
+	Long: `A proof of concept project of a reverse proxy.`,
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
 	//	Run: func(cmd *cobra.Command, args []string) { },
@@ -78,8 +63,10 @@ func initConfig() {
 		}
 
 		// Search config in home directory with name ".poc-reverse-proxy" (without extension).
-		viper.AddConfigPath(home)
-		viper.SetConfigName(".poc-reverse-proxy")
+		viper.AddConfigPath(filepath.Join(home, ".poc-reverse-proxy"))
+		viper.SetConfigName("config")
+		viper.SetConfigType("yaml")
+		viper.SetConfigType("yml")
 	}
 
 	viper.AutomaticEnv() // read in environment variables that match
