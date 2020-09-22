@@ -1,4 +1,4 @@
 tasks:
-  - command: go version
+  - command: cd /tmp && go get -v github.com/spf13/cobra/cobra
 #image:
 #  file: .gitpod.Dockerfile
