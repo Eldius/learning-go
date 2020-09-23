@@ -1,7 +1,6 @@
 ---
 routes:
   ^/app01.*\z:
-    methods: []
     headers:
       in:
         - Content-Type
@@ -10,9 +9,8 @@ routes:
       out:
         - Content-Type
     backends:
-      - http://localhost:8888
+      - http://localhost:1111
   ^/app02.*\z:
-    methods: []
     headers:
       in:
         - Content-Type
@@ -21,4 +19,24 @@ routes:
       out:
         - Content-Type
     backends:
-      - http://localhost:9999
+      - http://localhost:2222
+  ^/app03.*\z:
+    headers:
+      in:
+        - Content-Type
+        - Accepts
+        - Host
+      out:
+        - Content-Type
+    backends:
+      - http://localhost:3333
+  ^/app04.*\z:
+    headers:
+      in:
+        - Content-Type
+        - Accepts
+        - Host
+      out:
+        - Content-Type
+    backends:
+      - http://localhost:4444

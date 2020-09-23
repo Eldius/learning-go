@@ -24,7 +24,7 @@ type RoutesConfig struct {
 	patterns map[*regexp.Regexp]Route
 }
 
-func (c *RoutesConfig) GetRoute(req http.Request) *Route {
+func (c *RoutesConfig) GetRoute(req *http.Request) *Route {
 	return match(req.URL.RequestURI(), c.patterns)
 }
 
