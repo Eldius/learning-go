@@ -1,5 +1,5 @@
 - routes:
-  $/app01:
+  ^/app01.*\z:
     headers:
       in:
         - Content-Type
@@ -9,7 +9,7 @@
         - Content-Type
     backends:
       - http://localhost:1111
-  $/app02:
+  ^/app02.*\z:
     headers:
       in:
         - Content-Type
@@ -19,7 +19,7 @@
         - Content-Type
     backends:
       - http://localhost:2222
-  $/app03:
+  ^/app03.*\z:
     headers:
       in:
         - Content-Type
@@ -29,7 +29,7 @@
         - Content-Type
     backends:
       - http://localhost:3333
-  $/app04:
+  ^/app04.*\z:
     headers:
       in:
         - Content-Type
