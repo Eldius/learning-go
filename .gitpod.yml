@@ -1,4 +1,4 @@
 tasks:
   - command: cd /tmp && go get -v github.com/spf13/cobra/cobra && curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.31.0
-#image:
-#  file: .gitpod.Dockerfile
+image:
+  file: .gitpod.Dockerfile
