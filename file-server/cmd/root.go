@@ -4,20 +4,19 @@ Package cmd is where commands live...
 package cmd
 
 import (
-	"path/filepath"
 	"fmt"
-	"log"
+	"github.com/gorilla/handlers"
+	homedir "github.com/mitchellh/go-homedir"
 	"github.com/spf13/cobra"
-	"os"
+	"github.com/spf13/viper"
+	"log"
 	"net"
 	"net/http"
-	homedir "github.com/mitchellh/go-homedir"
-	"github.com/spf13/viper"
-	"github.com/gorilla/handlers"
+	"os"
+	"path/filepath"
 )
 
 var cfgFile string
-
 
 var buildTime string
 var commitHash string
@@ -51,38 +50,41 @@ build time: %s
 		}
 		http.Handle("/", r)
 		log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", serverPort), nil))
-	 },
+	},
 }
 
 func printServerStartedLog(path string, serverPort int) {
-	msg := fmt.Sprintf("\n\n---\nServing %s on HTTP at:\n", path)
-	for _, ip := range getIPAddress() {
-		msg += fmt.Sprintf("- http://%s:%d\n", ip, serverPort)
+	ipList := getIPAddress()
+	if len(ipList) == 0 {
+		msg := fmt.Sprintf("\n\n---\nServing %s on HTTP at:\n", path)
+		for _, ip := range ipList {
+			msg += fmt.Sprintf("- http://%s:%d\n", ip, serverPort)
+		}
+		msg += "---\n"
+		log.Println(msg)
 	}
-	msg += "---\n"
-	log.Println(msg)
 }
 
 func getIPAddress() []string {
 	results := make([]string, 0)
 	ifaces, err := net.Interfaces()
-	// handle err
 	if err != nil {
-
+		fmt.Println("Failed to fetch IP addresses")
+		return make([]string, 0)
 	}
 	for _, i := range ifaces {
 		addrs, err := i.Addrs()
 		if err != nil {
 			log.Panic(err.Error())
+			continue
 		}
-		// handle err
 		for _, addr := range addrs {
 			var ip net.IP
 			switch v := addr.(type) {
 			case *net.IPNet:
-					ip = v.IP
+				ip = v.IP
 			case *net.IPAddr:
-					ip = v.IP
+				ip = v.IP
 			}
 			results = append(results, ip.String())
 		}
