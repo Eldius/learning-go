@@ -5,15 +5,15 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/gorilla/handlers"
+	"log"
+	"net"
+	"os"
+	"path/filepath"
+
+	"github.com/Eldius/learning-go/file-server/server"
 	homedir "github.com/mitchellh/go-homedir"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-	"log"
-	"net"
-	"net/http"
-	"os"
-	"path/filepath"
 )
 
 var cfgFile string
@@ -33,30 +33,16 @@ build time: %s
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
 	Run: func(cmd *cobra.Command, args []string) {
-
-		//mux := http.NewServeMux()
-		//fs := http.FileServer(http.Dir(getRootPath(serverPath)))
-		//mux.Handle("/", fs)
-		//mux.Handle("/", fs)
-		//http.ListenAndServe(fmt.Sprintf(":%d", serverPort) , mux)
-		//http.ListenAndServe(fmt.Sprintf(":%d", serverPort) , handlers.LoggingHandler(os.Stdout, mux))
-
-		path := getRootPath(serverPath)
-		fs := http.FileServer(http.Dir(path))
-		r := handlers.LoggingHandler(log.Writer(), fs)
-		printServerStartedLog(path, serverPort)
-		if *serverCompress {
-			r = handlers.CompressHandler(r)
-		}
-		http.Handle("/", r)
-		log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", serverPort), nil))
+		printServerStartedLog(serverPath, serverPort)
+		server.Serve(serverPath, serverPort)
 	},
 }
 
 func printServerStartedLog(path string, serverPort int) {
 	ipList := getIPAddress()
 	if len(ipList) == 0 {
-		msg := fmt.Sprintf("\n\n---\nServing %s on HTTP at:\n", path)
+		absolutePath, _ := filepath.Abs(path)
+		msg := fmt.Sprintf("\n\n---\nServing %s on HTTP at:\n", absolutePath)
 		for _, ip := range ipList {
 			msg += fmt.Sprintf("- http://%s:%d\n", ip, serverPort)
 		}
